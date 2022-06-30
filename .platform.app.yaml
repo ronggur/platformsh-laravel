@@ -2,10 +2,10 @@
 # in the same project.
 
 # The name of this app. Must be unique within a project.
-name: app
+name: laravel
 
 # The type of the application to build.
-type: php:8.0
+type: php:7.4
 
 dependencies:
     php:
@@ -13,8 +13,7 @@ dependencies:
 
 runtime:
     extensions:
-        - redis
-      # - blackfire # https://docs.platform.sh/integrations/observability/blackfire.
+        - memcached
 
 build:
     flavor: composer
@@ -31,10 +30,10 @@ hooks:
         # install a specific NodeJS version https://github.com/platformsh/snippets/
         #   -v requested version
         #   -y install Yarn
-        # curl -fsS https://raw.githubusercontent.com/platformsh/snippets/main/src/install_node.sh | { bash /dev/fd/3 -v 17.5 -y; } 3<&0
+        curl -fsS https://raw.githubusercontent.com/platformsh/snippets/main/src/install_node.sh | { bash /dev/fd/3 -v 17.5 -y; } 3<&0
 
         # uncomment next line to build assets deploying
-        # npm install && npm run production
+        npm install && npm run production
 
     deploy: |
         set -e
@@ -48,8 +47,7 @@ hooks:
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
     database: "db:mysql"
-    rediscache: "cache:redis"
-    redissession: "cache:redis"
+    memcachedcache: 'cachemc:memcached'
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
